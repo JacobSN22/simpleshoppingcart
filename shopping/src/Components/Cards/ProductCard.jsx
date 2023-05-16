@@ -1,6 +1,29 @@
 import React from "react";
 import styled from "styled-components";
 
+const ProductCard = ({ item, increaseCartQuantity, deleteProduct, returnAmount, decreaseCartQuantity, emptyCart }) => {
+  const { thumbnail, title, description, price } = item;
+  return (
+    <CardContainer>
+      <CardImage src={thumbnail} alt={title} />
+      <CardTitle>{title}</CardTitle>
+      <CardDescription>
+        {description} <br />
+      </CardDescription>
+      {returnAmount(item.id)}
+      <CardPrice>dk. {price}</CardPrice>
+      <CardButton onClick={()=> increaseCartQuantity(item.id, item.price, item, 1)}>Køb</CardButton>
+      <button onClick={() => decreaseCartQuantity(item.id)}>Fjern 1</button>
+      <button onClick={() => deleteProduct(item.id)}>Slet alle af dette product</button>
+      <button onClick={() => emptyCart(item.id)}>Slet alle products</button>
+
+    </CardContainer>
+  );
+};
+
+export default ProductCard;
+
+
 const CardContainer = styled.div`
   display: grid;
   grid-template-rows: repeat(2, auto) 1fr repeat(2, auto);
@@ -46,21 +69,3 @@ const CardButton = styled.button`
   border-radius: 4px;
   cursor: pointer;
 `;
-
-const ProductCard = ({ item, increaseCartQuantity, returnAmount }) => {
-  const { thumbnail, title, description, price } = item;
-  return (
-    <CardContainer>
-      <CardImage src={thumbnail} alt={title} />
-      <CardTitle>{title}</CardTitle>
-      <CardDescription>
-        {description} <br />
-      </CardDescription>
-      {returnAmount(item.id)}
-      <CardPrice>dk. {price}</CardPrice>
-      <CardButton onClick={()=> increaseCartQuantity(item.id, item.price, item, 1)}>Køb</CardButton>
-    </CardContainer>
-  );
-};
-
-export default ProductCard;

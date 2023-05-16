@@ -1,13 +1,18 @@
 import ProductCard from "./Components/Cards/ProductCard";
 import { GridSection } from "./Components/Sections/GridSection";
+import { Footer } from "./Components/partials/footer";
+import { Header } from "./Components/partials/header";
 import { useFetch } from "./Hooks/fetch";
 import { useShoppingCart } from "./Hooks/useShoppingCart";
+import { useDemo } from "./Hooks/usedemo";
 
 function App() {
 
-  const { increaseCartQuantity, returnAmount, shoppingCart} = useShoppingCart();
+  const { names } = useDemo("Niklas");
 
-  const url = "https://dummyjson.com/products";
+  const { increaseCartQuantity, deleteProduct, returnAmount, decreaseCartQuantity, emptyCart, shoppingCart} = useShoppingCart();
+
+  const url = "https://dummyjson.com/products?limit=8";
 
   const { apiData, loading, error } = useFetch(url, "products");
 
@@ -21,11 +26,14 @@ function App() {
 
   return (
     <>
+    <Header />
       <GridSection size="300px">
         {apiData.map((item, i) => (
-          <ProductCard key={i} item={item} {...{increaseCartQuantity, returnAmount}}/>
+          <ProductCard key={i} item={item} {...{increaseCartQuantity, emptyCart, returnAmount, deleteProduct, decreaseCartQuantity}}/>
         ))}
       </GridSection>
+      {names}
+      <Footer />
     </>
   );
 }
